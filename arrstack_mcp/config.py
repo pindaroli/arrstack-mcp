@@ -241,6 +241,19 @@ SERVICES: dict[str, Service] = {
             5055, ("seerr", "jellyseerr", "overseerr"), "Settings → General → API Key",
             group="Movies & TV",
         ),
+        Service(
+            "bitmagnet", "Bitmagnet", "DHT Crawler & Torrent Indexer", "bitmagnet_",
+            (
+                Setting("BITMAGNET_GRAPHQL_URL", "graphql_url",
+                        "Bitmagnet GraphQL endpoint URL (e.g. `http://localhost:3333/graphql`)",
+                        example="http://localhost:3333/graphql", url=True),
+                Setting("BITMAGNET_TIMEOUT", "timeout",
+                        "Bitmagnet request timeout in seconds (default: 30.0)", default="30.0"),
+            ),
+            3333, ("bitmagnet",), "Settings → GraphQL",
+            aliases=("bitmagnet",),
+            group="Downloads",
+        ),
     )
 }
 

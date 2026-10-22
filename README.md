@@ -286,6 +286,8 @@ stop the server at startup with a list of every problem.
 | `BOOKSHELF_API_KEY` | If Bookshelf | Bookshelf API key (Settings → General) |
 | `SEERR_URL` | No | Seerr / Overseerr / Jellyseerr base URL (e.g. `http://localhost:5055`) |
 | `SEERR_API_KEY` | If Seerr | Seerr API key (Settings → General) |
+| `BITMAGNET_GRAPHQL_URL` | No | Bitmagnet GraphQL endpoint URL (e.g. `http://localhost:3333/graphql`) |
+| `BITMAGNET_TIMEOUT` | No | Bitmagnet request timeout in seconds (default: 30.0) |
 | `ARD_ENABLED` | No | Agentic Resource Discovery publishing: `auto` (default; on for HTTP transports), `true`, or `false` |
 | `ARD_PUBLIC_URL` | No | Public base URL clients reach this server at (e.g. `https://arrstack.example.com`); advertises an absolute connection endpoint inside the card. Leave blank if the server is private. |
 | `ARD_DOMAIN` | No | Publisher domain for the `urn:air` logical identifier (defaults to the host of `ARD_PUBLIC_URL`, else `localhost`) |

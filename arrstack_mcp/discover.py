@@ -96,11 +96,16 @@ def _looks_seerr(client, base):
     return isinstance(data, dict) and "version" in data and "commitTag" in data
 
 
+def _looks_bitmagnet(client, base):
+    response = client.get(f"{base}/graphql")
+    return response.status_code in (200, 400, 405)
+
+
 FINGERPRINTS: dict[str, Callable[[httpx.Client, str], bool]] = {
     **{key: _looks_arr for key in _ARR_BASED},
     "qbittorrent": _looks_qbt, "rdtclient": _looks_qbt, "sabnzbd": _looks_sab,
     "jellyfin": _looks_jellyfin, "romm": _looks_romm, "gamevault": _looks_gamevault,
-    "seerr": _looks_seerr,
+    "seerr": _looks_seerr, "bitmagnet": _looks_bitmagnet,
 }
 
 
@@ -112,8 +117,11 @@ def candidates(service: config.Service) -> list[str]:
 
 
 def _probe(client: httpx.Client, key: str, base: str) -> bool:
+    checker = FINGERPRINTS.get(key)
+    if checker is None:
+        return False
     try:
-        return FINGERPRINTS[key](client, base)
+        return checker(client, base)
     except httpx.HTTPError:
         return False
 

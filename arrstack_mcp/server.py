@@ -135,6 +135,12 @@ BOOKSHELF_URL = SETTINGS["BOOKSHELF_URL"].rstrip("/")
 BOOKSHELF_API_KEY = SETTINGS["BOOKSHELF_API_KEY"]
 SEERR_URL = SETTINGS["SEERR_URL"].rstrip("/")
 SEERR_API_KEY = SETTINGS["SEERR_API_KEY"]
+BITMAGNET_GRAPHQL_URL = SETTINGS.get("BITMAGNET_GRAPHQL_URL", "").rstrip("/")
+if not BITMAGNET_GRAPHQL_URL:
+    bitmagnet_base = os.environ.get("BITMAGNET_URL", "").rstrip("/")
+    if bitmagnet_base:
+        BITMAGNET_GRAPHQL_URL = f"{bitmagnet_base}/graphql" if not bitmagnet_base.endswith("/graphql") else bitmagnet_base
+BITMAGNET_TIMEOUT = float(SETTINGS.get("BITMAGNET_TIMEOUT", "30.0") or 30.0)
 ENABLED_SERVICES = SETTINGS["ENABLED_SERVICES"]
 INSTRUCTION_PRESETS = SETTINGS["INSTRUCTION_PRESETS"]
 EXTRA_INSTRUCTIONS = SETTINGS["EXTRA_INSTRUCTIONS"]
@@ -3858,6 +3864,17 @@ def bookshelf_search_missing() -> str:
     if isinstance(result, dict):
         return "🔍 Search triggered for all missing books."
     return str(result)
+
+
+# ════════════════════════════════════════════════════════════════
+#  Bitmagnet Tools (GraphQL DHT & Torrent Search Engine)
+# ════════════════════════════════════════════════════════════════
+
+from . import bitmagnet
+
+bitmagnet.register_tools(mcp)
+bitmagnet_simple_search = bitmagnet.bitmagnet_simple_search
+bitmagnet_complex_search = bitmagnet.bitmagnet_complex_search
 
 
 # ── Entrypoint ──
